@@ -1,5 +1,6 @@
 package com.softtech.finalassignment.app.product.entity;
 
+import com.softtech.finalassignment.app.product.enums.ProductTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +18,9 @@ public class ProductType {
     @GeneratedValue(generator = "ProductType")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "TYPE", nullable = false)
-    private String productType;
+    private ProductTypeEnum productType;
 
     @Column(name = "VAT_RATE", nullable = false, precision = 19, scale = 2)
     private BigDecimal vatRate;
