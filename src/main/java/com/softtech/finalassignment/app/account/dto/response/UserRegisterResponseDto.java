@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class UserRegisterResponseDto {
 
-    private String firstName;
-    private String lastName;
-    private String userName;
+    private String firstname;
+    private String lastname;
+    private String username;
     private String password;
 
 }

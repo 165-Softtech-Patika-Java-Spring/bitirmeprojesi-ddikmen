@@ -8,9 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Repository
-@Transactional(readOnly = true)
 public interface AppUserDao extends JpaRepository<AppUser, Long> {
 
-    Optional<AppUser> findByUserName(String username);
-
+    Optional<AppUser> findByUsername(String username);
+    
 }

@@ -6,20 +6,22 @@ import com.softtech.finalassignment.app.account.dto.request.UserRegisterRequestD
 import com.softtech.finalassignment.app.account.dto.response.UserRegisterResponseDto;
 import com.softtech.finalassignment.app.account.entity.AppUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AppUserService implements UserDetailsService {
+public class AppUserService{
 
     private final AppUserDao appUserDao;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserRegisterResponseDto registerUser(UserRegisterRequestDto userRegisterRequestDto){
+    public UserRegisterResponseDto save(UserRegisterRequestDto userRegisterRequestDto){
 
         AppUser appUser = convertToUser(userRegisterRequestDto);
+
+        String encodedPassword = passwordEncoder.encode(appUser.getPassword());
+        appUser.setPassword(encodedPassword);
 
         appUserDao.save(appUser);
 
@@ -37,10 +39,4 @@ public class AppUserService implements UserDetailsService {
         return AppUserMapper.INSTANCE.convertToUserRegisterResponseDto(appUser);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return appUserDao.findByUserName(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Not found: " + username));
-        //todo exceptions
-    }
 }

@@ -21,7 +21,7 @@ public class AppUserController {
     @PostMapping
     public ResponseEntity register(@RequestBody UserRegisterRequestDto userRegisterRequestDto){
 
-        UserRegisterResponseDto userRegisterResponseDto = appUserService.registerUser(userRegisterRequestDto);
+        UserRegisterResponseDto userRegisterResponseDto = appUserService.save(userRegisterRequestDto);
 
         return ResponseEntity.ok(RestResponse.of(userRegisterResponseDto));
     }
