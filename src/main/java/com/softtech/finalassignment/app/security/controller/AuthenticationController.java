@@ -1,8 +1,7 @@
 package com.softtech.finalassignment.app.security.controller;
 
-import com.softtech.finalassignment.app.account.dto.request.UserRegisterRequestDto;
-import com.softtech.finalassignment.app.account.dto.response.UserRegisterResponseDto;
-import com.softtech.finalassignment.app.account.service.AppUserService;
+import com.softtech.finalassignment.app.account.dto.request.AppUserRegisterRequestDto;
+import com.softtech.finalassignment.app.account.dto.response.AppUserRegisterResponseDto;
 import com.softtech.finalassignment.app.generic.dto.RestResponse;
 import com.softtech.finalassignment.app.security.dto.SecurityLoginRequestDto;
 import com.softtech.finalassignment.app.security.service.AuthenticationService;
@@ -29,10 +28,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody UserRegisterRequestDto userRegisterRequestDto){
+    public ResponseEntity register(@RequestBody AppUserRegisterRequestDto appUserRegisterRequestDto){
 
-        UserRegisterResponseDto userRegisterResponseDto = authenticationService.register(userRegisterRequestDto);
+        AppUserRegisterResponseDto appUserRegisterResponseDto = authenticationService.register(appUserRegisterRequestDto);
 
-        return ResponseEntity.ok(RestResponse.of(userRegisterResponseDto));
+        return ResponseEntity.ok(RestResponse.of(appUserRegisterResponseDto));
     }
 }

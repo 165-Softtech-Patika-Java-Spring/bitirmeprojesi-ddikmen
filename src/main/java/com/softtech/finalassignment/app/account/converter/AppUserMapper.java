@@ -1,8 +1,8 @@
 package com.softtech.finalassignment.app.account.converter;
 
-import com.softtech.finalassignment.app.account.dto.request.UserRegisterRequestDto;
+import com.softtech.finalassignment.app.account.dto.request.AppUserRegisterRequestDto;
 import com.softtech.finalassignment.app.account.dto.request.UserUpdateRequestDto;
-import com.softtech.finalassignment.app.account.dto.response.UserRegisterResponseDto;
+import com.softtech.finalassignment.app.account.dto.response.AppUserRegisterResponseDto;
 import com.softtech.finalassignment.app.account.dto.response.UserUpdateResponseDto;
 import com.softtech.finalassignment.app.account.entity.AppUser;
 import org.mapstruct.Mapper;
@@ -14,11 +14,11 @@ public interface AppUserMapper {
 
     AppUserMapper INSTANCE = Mappers.getMapper(AppUserMapper.class);
 
-    AppUser convertToUser(UserRegisterRequestDto userRegisterRequestDto);
+    AppUser convertToUser(AppUserRegisterRequestDto appUserRegisterRequestDto);
 
     AppUser convertToUser(UserUpdateRequestDto userUpdateRequestDto);
 
-    UserRegisterResponseDto convertToUserRegisterResponseDto(AppUser appUser);
+    AppUserRegisterResponseDto convertToUserRegisterResponseDto(AppUser appUser);
 
     UserUpdateResponseDto convertToUserUpdateResponseDto(AppUser appUser);
 }

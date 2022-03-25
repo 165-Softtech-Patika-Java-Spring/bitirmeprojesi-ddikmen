@@ -3,7 +3,7 @@ package com.softtech.finalassignment.app.account.dto.response;
 import lombok.Data;
 
 @Data
-public class UserRegisterResponseDto {
+public class AppUserRegisterResponseDto {
 
     private String firstname;
     private String lastname;

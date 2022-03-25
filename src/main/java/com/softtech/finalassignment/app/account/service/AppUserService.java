@@ -2,12 +2,15 @@ package com.softtech.finalassignment.app.account.service;
 
 import com.softtech.finalassignment.app.account.converter.AppUserMapper;
 import com.softtech.finalassignment.app.account.dao.AppUserDao;
-import com.softtech.finalassignment.app.account.dto.request.UserRegisterRequestDto;
+import com.softtech.finalassignment.app.account.dto.request.AppUserRegisterRequestDto;
 import com.softtech.finalassignment.app.account.dto.request.UserUpdateRequestDto;
-import com.softtech.finalassignment.app.account.dto.response.UserRegisterResponseDto;
+import com.softtech.finalassignment.app.account.dto.response.AppUserRegisterResponseDto;
 import com.softtech.finalassignment.app.account.dto.response.UserUpdateResponseDto;
 import com.softtech.finalassignment.app.account.entity.AppUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,40 +23,54 @@ public class AppUserService{
     private final AppUserDao appUserDao;
     private final PasswordEncoder passwordEncoder;
 
-    public UserRegisterResponseDto save(UserRegisterRequestDto userRegisterRequestDto){
+    public AppUserRegisterResponseDto save(AppUserRegisterRequestDto appUserRegisterRequestDto){
 
-        AppUser appUser = convertToUser(userRegisterRequestDto);
+        AppUser appUser = convertToUser(appUserRegisterRequestDto);
 
         String encodedPassword = passwordEncoder.encode(appUser.getPassword());
         appUser.setPassword(encodedPassword);
 
         appUserDao.save(appUser);
 
-        UserRegisterResponseDto userRegisterResponseDto = convertToUserRegisterResponseDto(appUser);
+        AppUserRegisterResponseDto appUserRegisterResponseDto = convertToUserRegisterResponseDto(appUser);
 
-        return userRegisterResponseDto;
+        return appUserRegisterResponseDto;
     }
 
-    public UserUpdateResponseDto update(String username, UserUpdateRequestDto userUpdateRequestDto){
+    public String updateUsername(String username){
 
-        Optional<AppUser> optionalAppUser = appUserDao.findByUsername(username);
+        String currentUser = getUsername();
+        Optional<AppUser> userOptional = appUserDao.findByUsername(currentUser);
 
-
-        UserUpdateResponseDto updateResponseDto;
-        if(optionalAppUser.isPresent()){
-            AppUser user = optionalAppUser.get();
-            Long id = user.getId();
-            user = AppUserMapper.INSTANCE.convertToUser(userUpdateRequestDto);
-            user.setId(id);
-            String encodedPassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(encodedPassword);
+        if(userOptional.isPresent()){
+            AppUser user = userOptional.get();
+            user.setUsername(username);
             appUserDao.save(user);
-            updateResponseDto = AppUserMapper.INSTANCE.convertToUserUpdateResponseDto(user);
         }else{
             throw new RuntimeException("User not found!");
         }
 
-        return updateResponseDto;
+        return username;
+    }
+
+    public void updatePassword(String currentPasswordReq, String newPassword){
+
+        String myPassword = getPassword();
+
+        if(!passwordEncoder.matches(currentPasswordReq,myPassword)){
+            throw new RuntimeException("Wrong password");
+        }
+
+        String username = getUsername();
+        Optional<AppUser> myaccountOptional = appUserDao.findByUsername(username);
+
+        if(myaccountOptional.isPresent()){
+            AppUser myaccount = myaccountOptional.get();
+            String encodedPassword = passwordEncoder.encode(newPassword);
+            myaccount.setPassword(encodedPassword);
+            appUserDao.save(myaccount);
+        }
+
     }
 
     public void deleteUser(String username){
@@ -65,11 +82,31 @@ public class AppUserService{
         }
     }
 
-    private AppUser convertToUser(UserRegisterRequestDto userRegisterRequestDto) {
-        return AppUserMapper.INSTANCE.convertToUser(userRegisterRequestDto);
+    private String getUsername() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+
+        String username = ((UserDetails) principal).getUsername();
+
+        return username;
     }
 
-    private UserRegisterResponseDto convertToUserRegisterResponseDto(AppUser appUser) {
+    private String getPassword() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+
+        String password = ((UserDetails) principal).getPassword();
+
+        return password;
+    }
+
+    private AppUser convertToUser(AppUserRegisterRequestDto appUserRegisterRequestDto) {
+        return AppUserMapper.INSTANCE.convertToUser(appUserRegisterRequestDto);
+    }
+
+    private AppUserRegisterResponseDto convertToUserRegisterResponseDto(AppUser appUser) {
         return AppUserMapper.INSTANCE.convertToUserRegisterResponseDto(appUser);
     }
 

@@ -24,6 +24,9 @@ public class Product {
     @Column(name = "PRICE_RAW", nullable = false, precision = 19, scale = 2)
     private BigDecimal rawPrice;
 
+    @Column(name = "PRICE_AFTER_VAT", nullable = false, precision = 19, scale = 2)
+    private BigDecimal priceAfterTax;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "TYPE", nullable = false)
     private ProductTypeEnum type;

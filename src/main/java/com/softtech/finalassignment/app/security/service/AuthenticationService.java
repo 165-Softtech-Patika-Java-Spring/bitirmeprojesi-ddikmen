@@ -1,7 +1,7 @@
 package com.softtech.finalassignment.app.security.service;
 
-import com.softtech.finalassignment.app.account.dto.request.UserRegisterRequestDto;
-import com.softtech.finalassignment.app.account.dto.response.UserRegisterResponseDto;
+import com.softtech.finalassignment.app.account.dto.request.AppUserRegisterRequestDto;
+import com.softtech.finalassignment.app.account.dto.response.AppUserRegisterResponseDto;
 import com.softtech.finalassignment.app.account.service.AppUserService;
 import com.softtech.finalassignment.app.security.dto.SecurityLoginRequestDto;
 import com.softtech.finalassignment.app.security.enums.EnumJwtConstant;
@@ -21,11 +21,11 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenGenerator jwtTokenGenerator;
 
-    public UserRegisterResponseDto register(UserRegisterRequestDto userRegisterRequestDto){
+    public AppUserRegisterResponseDto register(AppUserRegisterRequestDto appUserRegisterRequestDto){
 
-        UserRegisterResponseDto userRegisterResponseDto = appUserService.save(userRegisterRequestDto);
+        AppUserRegisterResponseDto appUserRegisterResponseDto = appUserService.save(appUserRegisterRequestDto);
 
-        return userRegisterResponseDto;
+        return appUserRegisterResponseDto;
     }
 
     public String login(SecurityLoginRequestDto securityLoginRequestDto){

@@ -1,9 +1,5 @@
 package com.softtech.finalassignment.app.account.controller;
 
-import com.softtech.finalassignment.app.account.dto.request.UserRegisterRequestDto;
-import com.softtech.finalassignment.app.account.dto.request.UserUpdateRequestDto;
-import com.softtech.finalassignment.app.account.dto.response.UserRegisterResponseDto;
-import com.softtech.finalassignment.app.account.dto.response.UserUpdateResponseDto;
 import com.softtech.finalassignment.app.account.service.AppUserService;
 import com.softtech.finalassignment.app.generic.dto.RestResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +13,20 @@ public class AppUserController {
 
     private final AppUserService appUserService;
 
-    @PutMapping("/username")
-    public ResponseEntity updateUser(@RequestParam String username, @RequestBody UserUpdateRequestDto userUpdateRequestDto){
+    @PatchMapping("/username-change")
+    public ResponseEntity updateUsername(@RequestParam String username){
 
-        UserUpdateResponseDto updateResponseDto = appUserService.update(username, userUpdateRequestDto);
+        String updatedUsername = appUserService.updateUsername(username);
 
-        return ResponseEntity.ok(RestResponse.of(updateResponseDto));
+        return ResponseEntity.ok(RestResponse.of(updatedUsername));
+    }
+
+    @PatchMapping("/password-change")
+    public ResponseEntity updatePassword(@RequestParam String currentPassword, @RequestParam String newPassword){
+
+        appUserService.updatePassword(currentPassword,newPassword);
+
+        return ResponseEntity.ok(RestResponse.empty());
     }
 
     @DeleteMapping("/username")

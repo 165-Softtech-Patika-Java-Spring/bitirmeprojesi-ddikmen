@@ -16,15 +16,15 @@ public class ProductService {
 
     private final ProductDao productDao;
 
+    //todo revisit this for fetching vat data from db
     public ProductCreateResponseDto addProduct(ProductCreateRequestDto productCreateRequestDto){
-
         Product product = ProductMapper.INSTANCE.convertToProduct(productCreateRequestDto);
 
         BigDecimal rawPrice = product.getRawPrice();
         BigDecimal taxRate = product.getType().getVatRate().divide(BigDecimal.valueOf(100));
         BigDecimal priceAfterTax = rawPrice.add(rawPrice.multiply(taxRate));
 
-        product.setRawPrice(priceAfterTax);
+        product.setPriceAfterTax(priceAfterTax);
 
         productDao.save(product);
 

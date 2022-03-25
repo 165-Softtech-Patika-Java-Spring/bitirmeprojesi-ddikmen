@@ -14,8 +14,6 @@ import java.math.BigDecimal;
 public class ProductType {
 
     @Id
-    @SequenceGenerator(name = "ProductType",sequenceName = "PRODUCT_TYPE_ID_SEQ", allocationSize = 1)
-    @GeneratedValue(generator = "ProductType")
     private Long id;
 
     @Enumerated(EnumType.STRING)
