@@ -16,9 +16,7 @@ public interface AppUserMapper {
 
     AppUser convertToUser(AppUserRegisterRequestDto appUserRegisterRequestDto);
 
-    AppUser convertToUser(UserUpdateRequestDto userUpdateRequestDto);
-
     AppUserRegisterResponseDto convertToUserRegisterResponseDto(AppUser appUser);
 
-    UserUpdateResponseDto convertToUserUpdateResponseDto(AppUser appUser);
+    UserUpdateResponseDto convertToUserUpdateResponseDto(UserUpdateRequestDto userUpdateRequestDto);
 }

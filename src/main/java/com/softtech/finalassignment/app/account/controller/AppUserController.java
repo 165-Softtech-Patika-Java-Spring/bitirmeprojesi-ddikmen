@@ -1,5 +1,7 @@
 package com.softtech.finalassignment.app.account.controller;
 
+import com.softtech.finalassignment.app.account.dto.request.UserUpdateRequestDto;
+import com.softtech.finalassignment.app.account.dto.response.UserUpdateResponseDto;
 import com.softtech.finalassignment.app.account.service.AppUserService;
 import com.softtech.finalassignment.app.generic.dto.RestResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,14 @@ public class AppUserController {
         appUserService.updatePassword(currentPassword,newPassword);
 
         return ResponseEntity.ok(RestResponse.empty());
+    }
+
+    @PatchMapping("/user-details-update")
+    public ResponseEntity updateNameAndLastName(@RequestBody UserUpdateRequestDto userUpdateRequestDto){
+
+        UserUpdateResponseDto updateResponseDto = appUserService.updateNameAndLastName(userUpdateRequestDto);
+
+        return ResponseEntity.ok(RestResponse.of(updateResponseDto));
     }
 
     @DeleteMapping("/username")

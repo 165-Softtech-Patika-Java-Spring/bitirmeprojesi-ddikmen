@@ -73,6 +73,25 @@ public class AppUserService{
 
     }
 
+    public UserUpdateResponseDto updateNameAndLastName(UserUpdateRequestDto userUpdateRequestDto){
+
+        String username = getUsername();
+        Optional<AppUser> myAccountOptional = appUserDao.findByUsername(username);
+
+        UserUpdateResponseDto updateResponseDto;
+        if(myAccountOptional.isPresent()){
+            AppUser myAccount = myAccountOptional.get();
+            myAccount.setFirstname(userUpdateRequestDto.getFirstname());
+            myAccount.setLastname(userUpdateRequestDto.getLastname());
+            appUserDao.save(myAccount);
+            updateResponseDto = AppUserMapper.INSTANCE.convertToUserUpdateResponseDto(userUpdateRequestDto);
+        }else{
+            throw new RuntimeException("User not found!");
+        }
+
+        return updateResponseDto;
+    }
+
     public void deleteUser(String username){
         Optional<AppUser> userOptional = appUserDao.findByUsername(username);
         if(userOptional.isPresent()){
